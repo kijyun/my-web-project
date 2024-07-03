@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>カウントボタン</title>
+    <style>
+        button {
+            font-size: 2rem;
+            padding: 1rem 2rem;
+            margin: 1rem;
+        }
+        #count {
+            font-size: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>ボタンを押してカウントしよう</h1>
+    <button id="countButton">クリック</button>
+    <p>ボタンクリック回数: <span id="count">0</span></p>
+
+    <script>
+        let count = 0;
+        const countButton = document.getElementById('countButton');
+        const countDisplay = document.getElementById('count');
+
+        countButton.addEventListener('click', () => {
+            count++;
+            countDisplay.textContent = count;
+
+            // サーバにカウントを送信
+            fetch('/count', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ count: 1 })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('サーバにカウントを送信しました', data);
+            })
+            .catch(error => {
+                console.error('エラー:', error);
+            });
+        });
+    </script>
+</body>
+</html>

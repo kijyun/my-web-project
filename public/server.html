@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>サーバ側カウント表示</title>
+    <style>
+        #totalCount {
+            font-size: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>現在の合計クリック数</h1>
+    <p>合計クリック数: <span id="totalCount">0</span></p>
+
+    <script>
+        const totalCountDisplay = document.getElementById('totalCount');
+
+        function fetchTotalCount() {
+            fetch('/total-count')
+                .then(response => response.json())
+                .then(data => {
+                    totalCountDisplay.textContent = data.totalCount;
+                })
+                .catch(error => {
+                    console.error('エラー:', error);
+                });
+        }
+
+        // 定期的に合計クリック数を更新
+        setInterval(fetchTotalCount, 1000);
+        fetchTotalCount(); // 初回読み込み
+    </script>
+</body>
+</html>
